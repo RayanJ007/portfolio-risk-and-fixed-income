@@ -61,6 +61,10 @@ def sample_tables():
         trades.append(dict(trade_id=f'REBAL-{sid}', portfolio_id='DEMO', security_id=sid,
                            trade_date=dates[-1], settlement_date=dates[-1], quantity=qty,
                            price=price, currency='CAD', trade_type='trade'))
+    # Both bonds pay coupons on the valuation date. Record cash receipts explicitly.
+    trades.append(dict(trade_id='COUPONS-20260831',portfolio_id='DEMO',security_id='CAD_CASH',
+                       trade_date=dates[-1],settlement_date=dates[-1],quantity=685000.,price=1.,
+                       currency='CAD',trade_type='income'))
     marks = []
     for row in securities:
         if row.get('price_factor'):
@@ -78,8 +82,19 @@ def sample_tables():
             'yield_curve': pd.DataFrame(curves), 'factor_levels': pd.DataFrame(factor_rows)}
 
 
-def write_sample(directory='data/sample'):
+def write_sample(directory='data/sample',real_fx_path=None):
     output = Path(directory)
     output.mkdir(parents=True, exist_ok=True)
-    for name, frame in sample_tables().items():
+    tables=sample_tables()
+    if real_fx_path is not None:
+        fx=pd.read_csv(real_fx_path)
+        if fx.empty or not fx.rate.gt(0).all() or fx.date.duplicated().any() or not fx.currency.eq('USD').all() or not fx.base_currency.eq('CAD').all():
+            raise ValueError('Invalid real USD/CAD import')
+        if fx.source.str.contains('SYNTHETIC').any():
+            raise ValueError('Real FX import contains synthetic provenance')
+        tables['fx_rates']=fx
+        factors=tables['factor_levels']
+        imported=fx.rename(columns={'rate':'level'}).assign(factor='FX_USD',kind='log')
+        tables['factor_levels']=pd.concat([factors.loc[factors.factor!='FX_USD'],imported[factors.columns]],ignore_index=True)
+    for name, frame in tables.items():
         frame.to_csv(output / f'{name}.csv', index=False)

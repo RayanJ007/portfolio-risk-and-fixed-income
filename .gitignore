@@ -8,3 +8,5 @@ data/*.db-*
 outputs/
 node_modules/
 .env
+data/mixed_sample/
+*.xlsx.inspect.ndjson

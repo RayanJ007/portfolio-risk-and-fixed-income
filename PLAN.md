@@ -69,7 +69,7 @@ Unit tests: independent zero/par bond benchmarks, negative yield and YTM round t
 - [x] Phase 3: portfolio values, exposures and return/performance calculations validated.
 - [x] Phase 4: historical/parametric/Monte Carlo VaR, ES and marginal/component risk validated.
 - [x] Phase 5: stress, yield curves, risk-change attribution, data/trade quality controls validated.
-- [ ] Phase 6: daily report, professional Excel workbook, interactive dashboard and charts generated/verified.
+- [x] Phase 6: daily report, professional Excel workbook, interactive dashboard and charts generated/verified.
 - [ ] Phase 7: all tests pass, methodology and recruiter README complete, screenshots and clean-run verification.
 - [ ] Definition of done: all specification section 30 requirements verified; no synthetic data represented as real.
 
@@ -92,3 +92,6 @@ Phase 4: 18 tests pass. Historical and seeded correlated Monte Carlo share full 
 
 
 Phase 5: 22 tests pass. Full-repricing scenario signs and tenor-shock approximations validated. Attribution tests isolate drivers, interactions and exact numerical reconciliation. Controls detect injected missing prices/FX/mappings, duplicates, invalid bonds, stale quotes and missing history. Integrated two-date and reporting checks remain for phases 6–7.
+
+
+Phase 6: 27 tests pass, including temporary-SQLite daily runs, stored results, failure gating, cash coupon reconciliation, all six Streamlit pages and interactive custom stress. Daily JSON/Markdown/CSV and charts generated. Sixteen-sheet Excel workbook exported, recalculated and visually reviewed; independent checks pass and changing quantity updates NAV. Saved workbook chart reopened/rendered. Added a separate mixed-data run using real archived BoC FX and synthetic other markets; no gaps filled. Excel regeneration requires the bundled artifact Node runtime (documented).
