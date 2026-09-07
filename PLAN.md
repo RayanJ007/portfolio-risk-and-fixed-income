@@ -65,7 +65,7 @@ Unit tests: independent zero/par bond benchmarks, negative yield and YTM round t
 - [x] Specification fully read; repository inspected; plan created before implementation.
 - [x] Phase 0: runnable package/configuration foundation.
 - [x] Phase 1: relational database, meaningful SQL, market imports, security master, trades and labelled sample data.
-- [ ] Phase 2: bond price, YTM, Macaulay/modified duration, DV01, convexity, option and FX valuation validated.
+- [x] Phase 2: bond price, YTM, Macaulay/modified duration, DV01, convexity, option and FX valuation validated.
 - [ ] Phase 3: portfolio values, exposures and return/performance calculations validated.
 - [ ] Phase 4: historical/parametric/Monte Carlo VaR, ES and marginal/component risk validated.
 - [ ] Phase 5: stress, yield curves, risk-change attribution, data/trade quality controls validated.
@@ -80,3 +80,6 @@ Planning: no pre-existing implementation or Git history. Available Python 3.13 h
 
 
 Phase 1: 3 tests pass, including atomic import rollback and settlement-date cutoffs. Generated labelled deterministic CSV inputs. Public-data adapter preserves source URL, timestamps and raw response.
+
+
+Phase 2: 11 tests pass. Manual coupon scheduling/YTM/duration/convexity and European option Greeks validated against independent identities and finite differences. Bank of Canada retrieval succeeded: 416 real USD/CAD observations archived separately.
