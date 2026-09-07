@@ -67,7 +67,7 @@ Unit tests: independent zero/par bond benchmarks, negative yield and YTM round t
 - [x] Phase 1: relational database, meaningful SQL, market imports, security master, trades and labelled sample data.
 - [x] Phase 2: bond price, YTM, Macaulay/modified duration, DV01, convexity, option and FX valuation validated.
 - [x] Phase 3: portfolio values, exposures and return/performance calculations validated.
-- [ ] Phase 4: historical/parametric/Monte Carlo VaR, ES and marginal/component risk validated.
+- [x] Phase 4: historical/parametric/Monte Carlo VaR, ES and marginal/component risk validated.
 - [ ] Phase 5: stress, yield curves, risk-change attribution, data/trade quality controls validated.
 - [ ] Phase 6: daily report, professional Excel workbook, interactive dashboard and charts generated/verified.
 - [ ] Phase 7: all tests pass, methodology and recruiter README complete, screenshots and clean-run verification.
@@ -86,3 +86,6 @@ Phase 2: 11 tests pass. Manual coupon scheduling/YTM/duration/convexity and Euro
 
 
 Phase 3: 14 tests pass. SQL positions feed full CAD valuation; tests cover FX scaling, weights, prior-date cutoff, missing-return gaps, beta and drawdown. Continuous-zero curve discounting remains distinct from coupon-frequency YTM analytics.
+
+
+Phase 4: 18 tests pass. Historical and seeded correlated Monte Carlo share full repricing. Tests verify empirical fractional-tail ES, MC covariance recovery, zero-risk/singular covariance, confidence ordering, volatility scaling, nonlinear option behaviour and Euler/marginal reconciliation.
