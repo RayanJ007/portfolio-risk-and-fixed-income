@@ -64,7 +64,7 @@ Unit tests: independent zero/par bond benchmarks, negative yield and YTM round t
 
 - [x] Specification fully read; repository inspected; plan created before implementation.
 - [x] Phase 0: runnable package/configuration foundation.
-- [ ] Phase 1: relational database, meaningful SQL, market imports, security master, trades and labelled sample data.
+- [x] Phase 1: relational database, meaningful SQL, market imports, security master, trades and labelled sample data.
 - [ ] Phase 2: bond price, YTM, Macaulay/modified duration, DV01, convexity, option and FX valuation validated.
 - [ ] Phase 3: portfolio values, exposures and return/performance calculations validated.
 - [ ] Phase 4: historical/parametric/Monte Carlo VaR, ES and marginal/component risk validated.
@@ -77,3 +77,6 @@ Unit tests: independent zero/par bond benchmarks, negative yield and YTM round t
 
 Planning: no pre-existing implementation or Git history. Available Python 3.13 has NumPy, pandas, SciPy, pytest, Streamlit, Plotly and YAML. Next step: create the runnable package and database/data phase.
 
+
+
+Phase 1: 3 tests pass, including atomic import rollback and settlement-date cutoffs. Generated labelled deterministic CSV inputs. Public-data adapter preserves source URL, timestamps and raw response.
