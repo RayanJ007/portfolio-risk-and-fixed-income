@@ -1,0 +1,14 @@
+portfolio_id: DEMO
+base_currency: CAD
+as_of_date: '2026-08-31'
+prior_date: '2026-08-28'
+target_nav: 100000000
+window: 252
+minimum_history: 100
+confidence_levels: [0.95, 0.99]
+horizon_days: 1
+simulations: 10000
+seed: 42
+max_stale_business_days: 2
+annual_risk_free_rate: 0.03
+database: data/risk.db
