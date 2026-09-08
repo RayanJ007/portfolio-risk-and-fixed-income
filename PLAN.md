@@ -1,10 +1,10 @@
-# Institutional portfolio risk platform — implementation plan
+# Institutional portfolio risk platform â€” implementation plan
 
 Source of truth: `PROJECT_2_INSTITUTIONAL_RISK_CODEX_SPEC.md`, read in full from the supplied Downloads file on 2026-09-07. The repository initially contained only an empty `main.py` and no commits or repository instructions.
 
 ## Architecture
 
-CSV / public-source market data + trades + security master → SQLite → dated positions → instrument pricing → portfolio analytics → factor risk → stress / curves → risk-change attribution → controls → daily Markdown report, Excel workbook, Streamlit dashboard.
+CSV / public-source market data + trades + security master â†’ SQLite â†’ dated positions â†’ instrument pricing â†’ portfolio analytics â†’ factor risk â†’ stress / curves â†’ risk-change attribution â†’ controls â†’ daily Markdown report, Excel workbook, Streamlit dashboard.
 
 Use readable functions in `src/` packages, pandas/NumPy/SciPy, SQLite's standard Python driver, YAML configuration, Plotly and Streamlit. No service framework or ORM. One shared full-repricing function prices equities, ETFs, cash, fixed-rate bonds and European options in CAD under a factor state. SQL stores raw observations, dated position snapshots, curves, trades, risk runs and exceptions. Reports consume saved calculations; they do not implement independent risk mathematics.
 
@@ -18,7 +18,7 @@ Use readable functions in `src/` packages, pandas/NumPy/SciPy, SQLite's standard
 | 3 | Dated valuation, exposures, return history and benchmark metrics; depends on 2 | `feat: add portfolio valuation and performance analytics` |
 | 4 | Historical, parametric and correlated Monte Carlo VaR/ES, Euler contributions; depends on 3 | `feat: implement portfolio VaR expected shortfall and contributions` |
 | 5 | Full-repricing stress, key-rate curves, defensible two-date attribution, operational controls; depends on 4 | `feat: add stress attribution and operational risk controls` |
-| 6 | Integrated daily run, persisted results, Markdown, Excel, dashboard and charts; depends on validated 1–5 | `feat: build daily risk reporting Excel model and dashboard` |
+| 6 | Integrated daily run, persisted results, Markdown, Excel, dashboard and charts; depends on validated 1â€“5 | `feat: build daily risk reporting Excel model and dashboard` |
 | 7 | Adversarial financial tests, reproducibility, methodology, exploratory notebooks and recruiter README/screenshots; depends on 6 | `test: validate integrated risk platform and document methodology` |
 
 Each phase runs its relevant tests, resolves material failures, records evidence below and commits the coherent milestone. No phase is complete from execution alone.
@@ -43,11 +43,11 @@ Each phase runs its relevant tests, resolves material failures, records evidence
 
 - Dates: ISO dates, settlement-date positions, no observations after valuation date. Daily risk uses trailing 252 synchronized business-day factor changes; never forward-fill history. Latest valuation quotes have a bounded business-day age; missing/stale critical inputs block an approved run.
 - Money: CAD base by default, foreign FX quoted CAD per foreign unit. Quantity is units/contracts; bonds use face amount per unit, options explicit multiplier. Prices are local currency per unit; portfolio values and losses are base currency. Yields/volatilities/returns use decimals; 1 bp = 0.0001. P&L is positive for gains, VaR/ES are nonnegative loss statistics.
-- Bonds: regular coupons generated backward from maturity, Actual/Actual coupon-period fractional timing, no irregular stubs/ex-coupon calendars. Dirty price is discounted remaining contractual cash flows, clean = dirty − accrued. Nominal annual YTM compounded at coupon frequency; root solve with valid negative-yield domain. Macaulay = PV-weighted years; modified = Macaulay/(1+y/m); convexity from analytic second derivative; positive long-position DV01 = [P(y−1bp)−P(y+1bp)]/2. Curves use continuous zero discounting plus constant spread, distinct from YTM quoting.
-- Options: European Black–Scholes with dividend yield; transparent analytical Greeks, time ACT/365, fixed implied volatility in ordinary history unless a volatility factor is supplied; full repricing under shocks.
+- Bonds: regular coupons generated backward from maturity, Actual/Actual coupon-period fractional timing, no irregular stubs/ex-coupon calendars. Dirty price is discounted remaining contractual cash flows, clean = dirty âˆ’ accrued. Nominal annual YTM compounded at coupon frequency; root solve with valid negative-yield domain. Macaulay = PV-weighted years; modified = Macaulay/(1+y/m); convexity from analytic second derivative; positive long-position DV01 = [P(yâˆ’1bp)âˆ’P(y+1bp)]/2. Curves use continuous zero discounting plus constant spread, distinct from YTM quoting.
+- Options: European Blackâ€“Scholes with dividend yield; transparent analytical Greeks, time ACT/365, fixed implied volatility in ordinary history unless a volatility factor is supplied; full repricing under shocks.
 - Performance: simple returns, 252-day annualization, aligned benchmark, sample covariance (ddof=1). Clearly distinguish frozen-holdings hypothetical returns from realized portfolio performance. Report volatility, beta, Sharpe, drawdown, tracking error and information ratio with defined risk-free rate.
 - Historical risk: apply each observed log-price/log-FX and absolute-rate/spread/volatility shock to today's state and fully reprice. One-day static instantaneous market shocks, no passage of time/carry. 95%/99% empirical inverse-CDF quantile; ES uses exactly the worst tail probability with fractional boundary weight.
-- Parametric: zero-drift Gaussian factor changes, sample covariance, finite-difference instrument sensitivities. VaR = z sqrt(g'Σg); normal ES = φ(z)/(1−α) × sigma. Euler component VaR sums to total; marginal VaR is per additional security unit. Negative hedge contributions allowed.
+- Parametric: zero-drift Gaussian factor changes, sample covariance, finite-difference instrument sensitivities. VaR = z sqrt(g'Î£g); normal ES = Ï†(z)/(1âˆ’Î±) Ã— sigma. Euler component VaR sums to total; marginal VaR is per additional security unit. Negative hedge contributions allowed.
 - Monte Carlo: 10,000 simulations default, fixed seed, zero drift, sample covariance, symmetric eigen square root handles singular PSD matrices; reject materially indefinite matrices. Correlated log-price/FX and absolute rates/spreads/volatility, full instrument repricing, historical-tail estimator for VaR/ES. Any volatility-floor boundary disclosed. No unsupported multi-day square-root scaling.
 - Stress: named recession, inflation, credit crisis, equity crash and custom YAML factor shocks; curve parallel up/down and tenor-dependent steepener/flattener. Full repricing with duration/delta approximation comparison.
 - Attribution: compare two independent as-of calibrations. Replace positions, prices, FX, rate/spread levels, volatility-factor levels, calibrated factor volatilities, correlation and valuation date in explicit blocks. Average forward/reverse replacement paths to reduce ordering dependence; report interactions relative to one-at-a-time effects and numerical residual separately. This is a model-based allocation, not causal identification. Common instrument/factor universe includes zero quantities for entrants/exits.
@@ -70,8 +70,8 @@ Unit tests: independent zero/par bond benchmarks, negative yield and YTM round t
 - [x] Phase 4: historical/parametric/Monte Carlo VaR, ES and marginal/component risk validated.
 - [x] Phase 5: stress, yield curves, risk-change attribution, data/trade quality controls validated.
 - [x] Phase 6: daily report, professional Excel workbook, interactive dashboard and charts generated/verified.
-- [ ] Phase 7: all tests pass, methodology and recruiter README complete, screenshots and clean-run verification.
-- [ ] Definition of done: all specification section 30 requirements verified; no synthetic data represented as real.
+- [x] Phase 7: all tests pass, methodology and recruiter README complete, screenshots and clean-run verification.
+- [x] Definition of done: all specification section 30 requirements verified; no synthetic data represented as real.
 
 ## Progress log
 
@@ -91,9 +91,16 @@ Phase 3: 14 tests pass. SQL positions feed full CAD valuation; tests cover FX sc
 Phase 4: 18 tests pass. Historical and seeded correlated Monte Carlo share full repricing. Tests verify empirical fractional-tail ES, MC covariance recovery, zero-risk/singular covariance, confidence ordering, volatility scaling, nonlinear option behaviour and Euler/marginal reconciliation.
 
 
-Phase 5: 22 tests pass. Full-repricing scenario signs and tenor-shock approximations validated. Attribution tests isolate drivers, interactions and exact numerical reconciliation. Controls detect injected missing prices/FX/mappings, duplicates, invalid bonds, stale quotes and missing history. Integrated two-date and reporting checks remain for phases 6–7.
+Phase 5: 22 tests pass. Full-repricing scenario signs and tenor-shock approximations validated. Attribution tests isolate drivers, interactions and exact numerical reconciliation. Controls detect injected missing prices/FX/mappings, duplicates, invalid bonds, stale quotes and missing history. Integrated two-date and reporting checks remain for phases 6â€“7.
 
 
 Phase 6: 27 tests pass, including temporary-SQLite daily runs, stored results, failure gating, cash coupon reconciliation, all six Streamlit pages and interactive custom stress. Daily JSON/Markdown/CSV and charts generated. Sixteen-sheet Excel workbook exported, recalculated and visually reviewed; independent checks pass and changing quantity updates NAV. Saved workbook chart reopened/rendered. Added a separate mixed-data run using real archived BoC FX and synthetic other markets; no gaps filled. Excel regeneration requires the bundled artifact Node runtime (documented).
 
 Phase 7 financial review: 36 tests pass in a newly created virtual environment; pip check reports no broken requirements. Corrected average-cost treatment of sales and option multipliers, added trade cash-funding checks, required factor/curve consistency, and settlement-date FX conversion for external flows. Added independent saved-workbook checks. Fresh-database CLI run reproduced the baseline NAV and risk measures. Both synthetic and mixed-data runs succeed. All four notebook code sequences execute. Documentation and final screenshot packaging are being finalized.
+
+
+Phase 7 complete (2026-09-08): 36 tests pass in the clean virtual environment; dependency consistency check passes. Final README, methodology, data-import contract, saved daily report, validation record and four executable exploratory notebooks are included. Dashboard screenshots captured from the live application. Original specification preserved in docs/PROJECT_SPEC.md. The remaining runtime limitation is explicit: Excel regeneration uses the bundled artifact Node runtime, while the delivered workbook opens independently and the Python engine/dashboard run from pip dependencies. Reporting supports CAD base with CAD/USD holdings.
+
+## Definition-of-done audit
+
+All section 30 deliverables are implemented: relational portfolio model/database/security master/data pipeline/positions; manual bonds/YTM/duration/DV01/convexity; portfolio analytics; historical/parametric/Monte Carlo VaR and ES; risk contributions; stress and curve scenarios; risk-change attribution; data/trade controls; daily report; generated Excel workbook; tested Streamlit dashboard; passing automated tests; recruiter README; financial methodology; provenance and documented run commands. Evidence is recorded in reports/VALIDATION.md. No required implementation step remains within the documented scope. Optional future extensions are true zero-curve data adapters, automated corporate-action postings, longer-horizon models and additional base currencies.
