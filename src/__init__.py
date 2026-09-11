@@ -1,1 +1,1 @@
-"""Institutional portfolio risk, with explicit financial conventions."""
+"""Portfolio risk, with explicit financial conventions."""

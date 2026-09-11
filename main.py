@@ -11,7 +11,7 @@ from src.reporting.daily_report import export_reports
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Institutional portfolio risk engine")
+    parser = argparse.ArgumentParser(description="Portfolio risk engine")
     parser.add_argument(
         "command", choices=["demo", "mixed-demo", "run", "import", "fetch-fx", "excel"]
     )
