@@ -1,7 +1,5 @@
 # Portfolio Risk & Fixed-Income Analytics
 
-A student finance/data project using Python and SQL to value a multi-asset portfolio, measure potential market losses, and explain changes in risk.
-
 **What risks does the portfolio hold, how could it lose money, and why did its risk change since the previous valuation date?**
 
 **Data note:** Holdings and most market histories are synthetic and reproducible. A separate mixed-data run uses archived real Bank of Canada USD/CAD observations while other markets remain synthetic. Generated VaR, P&L, stress losses and performance metrics are not realized portfolio results.
