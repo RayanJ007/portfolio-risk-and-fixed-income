@@ -1,21 +1,21 @@
 # Daily portfolio risk report
 
-As of 2026-08-31 | Base CAD | One-day horizon
+As of 2026-08-26 | Base CAD | One-day horizon
 
-**Contains synthetic teaching data.** Calibration: 2025-09-12 to 2026-08-31, 252 synchronized observations. Sample covariance (ddof=1); zero drift. Monte Carlo: 10,000 simulations, seed 42. Positive VaR/ES denote losses; positive P&L denotes gains.
+**Hypothetical portfolio using public historical market data.** Calibration: 2025-07-11 to 2026-08-26, 252 synchronized observations. Sample covariance (ddof=1); zero drift. Monte Carlo: 10,000 simulations, seed 42. Positive VaR/ES denote losses; positive P&L denotes gains.
 
 ## Portfolio summary
 
-NAV: **101,390,516 CAD**. Prior NAV (2026-08-28): 101,660,737. Flow-adjusted daily P&L: **-270,221**. External flows: 0. Coupon receipts must be entered as cash income trades.
+NAV: **110,459,484 CAD**. Prior NAV (2026-08-25): 110,464,871. Flow-adjusted daily P&L: **-5,386**. External flows: 0. Coupon receipts must be entered as cash income trades.
 
 | asset_class | market_value |
 | --- | --- |
-| Cash | 9,305,000.00 |
-| Corporate bond | 12,171,761.64 |
-| Equity | 48,900,000.00 |
-| Fixed income ETF | 8,398,000.00 |
-| Government bond | 22,330,903.00 |
-| Option | 284,851.22 |
+| Cash | 8,849,940.00 |
+| Corporate bond | 13,923,827.08 |
+| Equity | 56,429,288.88 |
+| Fixed income ETF | 8,091,095.90 |
+| Government bond | 22,591,899.44 |
+| Option | 573,433.20 |
 
 ## One-day VaR and Expected Shortfall
 
@@ -23,12 +23,12 @@ Historical and Monte Carlo use full instrument repricing. Parametric uses local 
 
 | method | confidence | horizon_days | base_currency | var | es |
 | --- | --- | --- | --- | --- | --- |
-| Historical | 0.95 | 1 | CAD | 959,458.93 | 1,072,168.03 |
-| Parametric | 0.95 | 1 | CAD | 958,039.73 | 1,201,420.47 |
-| Monte Carlo | 0.95 | 1 | CAD | 963,859.78 | 1,192,800.37 |
-| Historical | 0.99 | 1 | CAD | 1,171,692.79 | 1,221,790.71 |
-| Parametric | 0.99 | 1 | CAD | 1,354,973.87 | 1,552,345.49 |
-| Monte Carlo | 0.99 | 1 | CAD | 1,340,380.59 | 1,522,803.13 |
+| Historical | 0.95 | 1 | CAD | 694,695.09 | 944,900.02 |
+| Parametric | 0.95 | 1 | CAD | 727,375.25 | 912,157.90 |
+| Monte Carlo | 0.95 | 1 | CAD | 722,281.17 | 889,664.89 |
+| Historical | 0.99 | 1 | CAD | 1,043,864.75 | 1,209,457.41 |
+| Parametric | 0.99 | 1 | CAD | 1,028,740.69 | 1,178,591.71 |
+| Monte Carlo | 0.99 | 1 | CAD | 1,000,385.01 | 1,131,507.49 |
 
 ## Top contributors to 99% parametric VaR
 
@@ -36,16 +36,16 @@ Marginal VaR is CAD per added security unit. Component VaR is CAD; negative cont
 
 | security_id | component_var | marginal_var | standalone_var |
 | --- | --- | --- | --- |
-| US_EQ | 737,688.74 | 10.54 | 820,430.41 |
-| CA_EQ | 492,735.00 | 1.96 | 643,435.32 |
-| US_CALL | 50,041.14 | 500.41 | 58,946.76 |
-| US_ETF | 44,014.54 | 0.68 | 146,285.35 |
-| CA_GOV | 19,847.35 | 0.09 | 117,232.90 |
-| USD_CASH | 8,742.14 | 0.00 | 30,260.69 |
-| CA_CORP | 1,904.97 | 0.02 | 93,688.70 |
+| SPY | 514,564.28 | 17.15 | 575,225.74 |
+| XIU.TO | 354,931.77 | 0.79 | 428,529.39 |
+| HYP_CAD_GOV | 62,292.18 | 0.28 | 103,831.33 |
+| HYP_US_IG | 57,469.92 | 0.57 | 104,770.68 |
+| TLT | 57,168.41 | 0.82 | 123,155.01 |
+| USD_CASH | 2,895.33 | 0.00 | 15,770.74 |
 | CAD_CASH | 0.00 | 0.00 | 0.00 |
+| HYP_SPY_CALL | -20,581.20 | -205.81 | 87,745.80 |
 
-Diversification benefit versus standalone VaRs: 555,306 CAD.
+Diversification benefit versus standalone VaRs: 410,288 CAD.
 
 ## Fixed income
 
@@ -53,51 +53,51 @@ Duration in years, convexity in years squared, yield in decimals. Position DV01 
 
 | security_id | ytm | modified_duration | convexity | position_dv01 |
 | --- | --- | --- | --- | --- |
-| CA_CORP | 0.05 | 5.86 | 40.66 | 7,133.61 |
-| CA_GOV | 0.03 | 4.56 | 24.06 | 10,185.72 |
+| HYP_CAD_GOV | 0.03 | 4.49 | 23.74 | 10,151.33 |
+| HYP_US_IG | 0.05 | 5.69 | 39.39 | 7,923.92 |
 
 ## Stress testing
 
 | scenario | pnl | new_nav |
 | --- | --- | --- |
-| Credit crisis | -14,342,802.57 | 87,047,713.29 |
-| Inflation | -14,074,139.80 | 87,316,376.07 |
-| Equity crash | -13,868,787.04 | 87,521,728.83 |
-| Recession | -9,681,921.74 | 91,708,594.13 |
-| Custom | -6,245,601.24 | 95,144,914.63 |
+| Inflation | -16,523,919.59 | 93,935,564.90 |
+| Equity crash | -15,496,278.25 | 94,963,206.24 |
+| Credit crisis | -15,398,506.64 | 95,060,977.85 |
+| Recession | -10,371,350.91 | 100,088,133.58 |
+| Custom | -7,311,572.01 | 103,147,912.48 |
 
 ## Yield curves
 
 | scenario | security_id | pnl | linear_pnl | nonlinear_difference |
 | --- | --- | --- | --- | --- |
-| Parallel +100 bp | CA_GOV | -1,010,389.47 | -1,035,137.53 | 24,748.05 |
-| Parallel +100 bp | CA_CORP | -706,950.34 | -730,544.47 | 23,594.13 |
-| Parallel -100 bp | CA_GOV | 1,060,712.59 | 1,035,137.53 | 25,575.07 |
-| Parallel -100 bp | CA_CORP | 755,232.96 | 730,544.47 | 24,688.49 |
-| Bear steepener | CA_GOV | -426,671.59 | -431,073.05 | 4,401.46 |
-| Bear steepener | CA_CORP | -353,223.30 | -359,212.33 | 5,989.03 |
-| Bull flattener | CA_GOV | 365,289.07 | 362,157.58 | 3,131.49 |
-| Bull flattener | CA_CORP | 292,488.24 | 288,581.84 | 3,906.40 |
+| Parallel +100 bp | HYP_CAD_GOV | -1,007,135.99 | -1,031,864.10 | 24,728.11 |
+| Parallel +100 bp | HYP_US_IG | -787,129.85 | -813,409.50 | 26,279.65 |
+| Parallel -100 bp | HYP_CAD_GOV | 1,057,420.73 | 1,031,864.10 | 25,556.63 |
+| Parallel -100 bp | HYP_US_IG | 840,909.66 | 813,409.50 | 27,500.17 |
+| Bear steepener | HYP_CAD_GOV | -425,822.83 | -430,232.46 | 4,409.63 |
+| Bear steepener | HYP_US_IG | -393,367.56 | -400,048.98 | 6,681.42 |
+| Bull flattener | HYP_CAD_GOV | 364,460.97 | 361,325.89 | 3,135.08 |
+| Bull flattener | HYP_US_IG | 325,726.75 | 321,370.34 | 4,356.41 |
 
 ## Why did 99% parametric VaR change?
 
-1,368,222 → 1,354,974 CAD; change **-13,248 CAD**. Average forward/reverse replacement paths; interactions allocated within drivers. This allocation is model-based, not causal.
+1,029,756 → 1,028,741 CAD; change **-1,015 CAD**. Average forward/reverse replacement paths; interactions allocated within drivers. This allocation is model-based, not causal.
 
 | driver | allocated_change | standalone_change |
 | --- | --- | --- |
-| Positions / trades | 1,978.32 | 1,994.56 |
-| Market prices | -11,218.94 | -11,254.77 |
-| FX levels | 3,102.25 | 3,121.61 |
-| Rates / spreads | -64.27 | -65.45 |
-| Option volatility levels | 427.67 | 393.67 |
-| Equity / ETF volatility | -4,102.62 | -4,114.22 |
-| FX volatility | 76.26 | 76.49 |
-| Rate / spread volatility | 16.74 | 16.78 |
-| Other factor volatility | 14.18 | 14.56 |
-| Correlation | -3,429.51 | -3,437.49 |
-| Valuation date / roll | -47.92 | -44.52 |
+| Positions / trades | 791.12 | 795.40 |
+| Market prices | -3,113.72 | -3,111.07 |
+| FX levels | 1,630.14 | 1,629.88 |
+| Rates / spreads | -112.77 | -113.03 |
+| Option volatility levels | -174.14 | -174.57 |
+| Equity / ETF volatility | -16.40 | -15.96 |
+| FX volatility | 129.57 | 129.61 |
+| Rate / spread volatility | 55.48 | 55.48 |
+| Other factor volatility | -2.93 | -2.92 |
+| Correlation | -248.13 | -247.59 |
+| Valuation date / roll | 46.78 | 46.90 |
 
-Interaction effect relative to standalone changes: 50.94 CAD (already allocated within drivers, do not add twice). Numerical residual: 0.00000000 CAD.
+Interaction effect relative to standalone changes: -7.11 CAD (already allocated within drivers, do not add twice). Numerical residual: 0.00000000 CAD.
 
 ## Hypothetical performance diagnostics
 
@@ -105,25 +105,48 @@ Frozen-current-exposure hypothetical daily scenario returns; these are scenario 
 
 | metric | value |
 | --- | --- |
-| cumulative_return | 0.07 |
-| annualized_return | 0.07 |
-| volatility | 0.09 |
-| sharpe | 0.47 |
-| max_drawdown | -0.06 |
+| cumulative_return | 0.10 |
+| annualized_return | 0.10 |
+| volatility | 0.06 |
+| sharpe | 1.08 |
+| max_drawdown | -0.04 |
 | observations | 252.00 |
-| beta | 0.40 |
-| tracking_error | 0.12 |
-| information_ratio | 0.44 |
+| beta | 0.44 |
+| tracking_error | 0.08 |
+| information_ratio | -1.77 |
 
 ## Data quality and key alerts
 
 | severity | count |
 | --- | --- |
-| PASS | 20 |
-| WARN | 1 |
+| PASS | 23 |
+| WARN | 2 |
 
 | severity | description |
 | --- | --- |
-| WARN | Contains explicitly synthetic teaching data |
+| WARN | Daily move exceeds eight robust standard deviations: 2026-04-29 |
+| WARN | Daily move exceeds eight robust standard deviations: 2025-08-15 |
 
 Volatility-floor activations in Monte Carlo: 0. No history is forward-filled. Holiday/missing-day gaps exclude both adjacent changes. See `reports/risk_methodology.md` for assumptions and limits.
+
+## Public source snapshot
+
+Retrieved 2026-09-12T17:16:45.652815+00:00. Source status applies to this cached snapshot.
+
+| name | series_id | last_date | units | status |
+| --- | --- | --- | --- | --- |
+| XIU.TO | XIU.TO | 2026-08-31 | CAD per share | OK |
+| SPY | SPY | 2026-08-31 | USD per share | OK |
+| TLT | TLT | 2026-08-31 | USD per share | OK |
+| VIX | ^VIX | 2026-08-31 | index points | OK |
+| fx | FXUSDCAD | 2026-08-31 | CAD per USD | OK |
+| CAD | ZC100YR,ZC200YR,ZC500YR,ZC1000YR,ZC3000YR | 2026-08-26 | continuous annual decimal | OK |
+| USD | SVENY01,SVENY02,SVENY05,SVENY10,SVENY30 | 2026-08-31 | continuous annual decimal | OK |
+| spread | BAMLC0A0CM | 2026-08-31 | annual spread decimal | OK |
+
+Hypothetical bond terms; European SPY call, strike 800, expiry 2027-08-31, assumed dividend yield 1.2%; VIX proxy.
+
+- BoC curves have a publication lag; valuation is retrospective, not an as-published trading backtest.
+- FRED ICE data may supply only three years and has redistribution restrictions.
+- VIX is a 30-day S&P 500 volatility proxy, not the SPY contract's implied volatility.
+- Current option-chain IV is deliberately excluded from historical valuation to avoid look-ahead.

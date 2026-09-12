@@ -267,7 +267,7 @@ def sample_tables():
     }
 
 
-def write_sample(directory="data/sample", real_fx_path=None):
+def write_sample(directory, real_fx_path=None):
     output = Path(directory)
     output.mkdir(parents=True, exist_ok=True)
     tables = sample_tables()

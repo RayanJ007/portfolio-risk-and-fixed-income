@@ -59,10 +59,25 @@ def run_portfolio(connection, config):
         risk_timing="Instantaneous one-business-day calibrated shocks; no carry or time passage",
     )
     sources = tables["factor_levels"].source
-    if sources.str.contains("SYNTHETIC").any() and (~sources.str.contains("SYNTHETIC")).any():
-        metadata["source_label"] = (
-            "Mixed: real Bank of Canada FX; synthetic other markets and holdings"
+    snapshot = connection.execute("SELECT manifest FROM data_snapshot WHERE id=1").fetchone()
+    if snapshot:
+        manifest = json.loads(snapshot[0])
+        metadata.update(
+            source_label=manifest["portfolio_label"],
+            data_sources=manifest["sources"],
+            source_warnings=manifest["warnings"],
+            snapshot_retrieved_at=manifest["retrieved_at"],
+            contract_assumptions=manifest["contract_assumptions"],
         )
+    metadata["latest_price_dates"] = (
+        tables["market_prices"]
+        .loc[tables["market_prices"].date <= date]
+        .groupby("security_id")
+        .date.max()
+        .to_dict()
+    )
+    if sources.str.contains("SYNTHETIC").any() and (~sources.str.contains("SYNTHETIC")).any():
+        metadata["source_label"] = "Mixed imported observations and synthetic test data"
     with connection:
         insert_frame(
             connection,
@@ -128,7 +143,9 @@ def run_portfolio(connection, config):
     attribution = attribute_change(
         before, after, lambda blocks: risk_from_blocks(master, kinds, blocks, currency)
     )
-    scenarios = yaml.safe_load((ROOT / "config/scenarios.yaml").read_text())
+    scenarios = yaml.safe_load(
+        Path(config.get("scenarios", ROOT / "config/scenarios.yaml")).read_text()
+    )
     stress = stress_results(master, q, state, kinds, date, scenarios, currency)
     curves = curve_scenarios(master, q, state, kinds, date, currency)
     quality = quality_checks(

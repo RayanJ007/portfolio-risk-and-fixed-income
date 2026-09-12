@@ -9,7 +9,7 @@ from src.risk.engine import (
     risk_contributions,
     scenario_pnl,
 )
-from src.data.sample import sample_tables
+from tests.fixtures.synthetic import sample_tables
 
 
 def test_tail_convention_and_fractional_es():

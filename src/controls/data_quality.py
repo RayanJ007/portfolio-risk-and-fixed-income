@@ -25,6 +25,9 @@ CHECKS = {
     "POSITION_RECON": "Reconcile settled trades and position quantities",
     "VALUE_RECON": "Reconcile quantity, multiplier, local price and FX",
     "DATA_PROVENANCE": "Use real imports for empirical market conclusions",
+    "OBSERVATION_KEYS": "Correct duplicate or non-monotonic dated observations",
+    "FUTURE_DATA": "Remove observations dated after today",
+    "INPUT_UNITS": "Check annual decimal rates/volatility and CAD per USD convention",
 }
 
 
@@ -51,6 +54,38 @@ def quality_checks(
         )
 
     master = tables["security_master"]
+    for table, keys in {
+        "market_prices": ["security_id"],
+        "fx_rates": ["currency", "base_currency"],
+        "yield_curve": ["curve_name", "tenor"],
+        "factor_levels": ["factor"],
+    }.items():
+        frame = tables[table]
+        if frame.duplicated(["date", *keys]).any() or any(
+            not group.date.is_monotonic_increasing for _, group in frame.groupby(keys)
+        ):
+            flag("OBSERVATION_KEYS", table, "Duplicate or non-monotonic observations")
+        if frame.date.gt(pd.Timestamp.now(tz="UTC").date().isoformat()).any():
+            flag("FUTURE_DATA", table, "Market observation dated in the future")
+    rates = tables["yield_curve"].rate
+    fx_inputs = tables["fx_rates"]
+    absolute = tables["factor_levels"]
+    rate_factors = absolute.loc[
+        absolute.factor.str.startswith(("CAD_", "USD_", "SPREAD_")), "level"
+    ]
+    vol_factors = absolute.loc[absolute.factor.str.startswith("VOL_"), "level"]
+    if (
+        not rates.between(-0.10, 0.30).all()
+        or not rate_factors.between(-0.10, 0.30).all()
+        or not vol_factors.between(0.00001, 3).all()
+    ):
+        flag("INPUT_UNITS", "rates/volatility", "Unexpected decimal units or value range")
+    if (
+        not fx_inputs.currency.eq("USD").all()
+        or not fx_inputs.base_currency.eq("CAD").all()
+        or not fx_inputs.rate.between(0.5, 2.5).all()
+    ):
+        flag("INPUT_UNITS", "FX", "Expected CAD per USD; verify source series and quote direction")
     trades = tables["trades"].loc[tables["trades"].portfolio_id == portfolio_id]
     known = set(master.security_id)
     for sid in master.loc[master.security_id.duplicated(False), "security_id"]:
@@ -233,8 +268,15 @@ def quality_checks(
         mad = (changes - med).abs().median() * 1.4826
         bounds = mad.clip(lower=1e-6) * 8
         for name in changes.columns:
-            if ((changes[name] - med[name]).abs() > bounds[name]).any():
-                flag("OUTLIER", name, "Daily move exceeds eight robust standard deviations", "WARN")
+            extreme = changes.index[(changes[name] - med[name]).abs() > bounds[name]]
+            if len(extreme):
+                dates = ", ".join(d.strftime("%Y-%m-%d") for d in extreme)
+                flag(
+                    "OUTLIER",
+                    name,
+                    f"Daily move exceeds eight robust standard deviations: {dates}",
+                    "WARN",
+                )
     except (ValueError, KeyError, TypeError):
         flag(
             "RETURN_HISTORY", "portfolio", "Missing, duplicate or insufficient synchronized history"

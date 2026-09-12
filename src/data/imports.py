@@ -1,11 +1,13 @@
 from datetime import datetime, timezone
 from pathlib import Path
+import json
 
 import numpy as np
 import pandas as pd
 import requests
 
 from src.database.repository import insert_frame
+from src.data.market_data import read_manifest
 
 INPUT_TABLES = (
     "portfolios",
@@ -20,6 +22,10 @@ INPUT_TABLES = (
 
 def import_directory(connection, directory):
     """All-or-nothing CSV import. Duplicate keys and foreign keys are errors."""
+    manifest_path = Path(directory) / "manifest.json"
+    manifest = read_manifest(directory) if manifest_path.exists() else None
+    if manifest and set(manifest["checksums"]) != {f"{t}.csv" for t in INPUT_TABLES}:
+        raise ValueError("Manifest must cover all seven input tables")
     with connection:
         for table in INPUT_TABLES:
             path = Path(directory) / f"{table}.csv"
@@ -35,7 +41,21 @@ def import_directory(connection, directory):
             numeric = frame.select_dtypes(include="number")
             if np.isinf(numeric.to_numpy()).any():
                 raise ValueError("Infinite numeric input")
+            if "date" in frame:
+                if frame.date.gt(datetime.now(timezone.utc).date().isoformat()).any():
+                    raise ValueError("Future market observation")
+                keys = {
+                    "market_prices": ["security_id"],
+                    "fx_rates": ["currency", "base_currency"],
+                    "yield_curve": ["curve_name", "tenor"],
+                    "factor_levels": ["factor"],
+                }[table]
+                for _, group in frame.groupby(keys):
+                    if not group.date.is_monotonic_increasing:
+                        raise ValueError(f"Non-monotonic dates: {table}")
             insert_frame(connection, table, frame)
+        if manifest:
+            connection.execute("INSERT INTO data_snapshot VALUES (1, ?)", (json.dumps(manifest),))
 
 
 def fetch_boc_fx(start, end, output_directory):

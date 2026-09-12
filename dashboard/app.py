@@ -14,12 +14,15 @@ import streamlit as st
 
 from src.reporting.charts import attribution_figure
 
-st.set_page_config(page_title="Portfolio Risk & Fixed-Income Analytics", page_icon="◈", layout="wide")
+st.set_page_config(
+    page_title="Portfolio Risk & Fixed-Income Analytics", page_icon="◈", layout="wide"
+)
 st.markdown(
     """<style>
 .block-container {padding-top:2rem; max-width:1500px;}
 [data-testid="stMetric"] {background:#f2f5f8; padding:18px; border-radius:6px; border-left:3px solid #375779;}
 [data-testid="stMetric"] * {color:#203850 !important;}
+[data-testid="stMetricValue"] {font-size:clamp(1.3rem,2vw,1.85rem);}
 h1,h2,h3 {color:#203850;}
 </style>""",
     unsafe_allow_html=True,
@@ -52,7 +55,8 @@ page = st.sidebar.radio(
 st.sidebar.caption(
     f"{meta['portfolio_id']} · {meta['base_currency']}\n\nAs of {meta['as_of_date']}\n\nPrior {meta['prior_date']}"
 )
-st.sidebar.warning(meta["source_label"])
+st.sidebar.info(meta["source_label"])
+st.sidebar.caption("Cached valuation snapshot · refresh sources explicitly from the command line")
 st.sidebar.download_button(
     "Download daily report",
     (report_path.parent / "daily_risk_report.md").read_bytes(),
@@ -257,6 +261,19 @@ elif page == "Risk Attribution":
     )
 
 else:
+    if meta.get("data_sources"):
+        st.subheader("Public source snapshot")
+        st.caption(
+            f"Retrieved {meta['snapshot_retrieved_at'][:10]}. Status refers to this saved snapshot, not live API health."
+        )
+        sources = pd.DataFrame(meta["data_sources"])
+        st.dataframe(
+            sources[["name", "series_id", "last_date", "status"]], hide_index=True, width="stretch"
+        )
+        st.write("Latest prices used", meta["latest_price_dates"])
+        for warning in meta.get("source_warnings", []):
+            st.caption(warning)
+        st.caption(meta["contract_assumptions"])
     checks = pd.DataFrame(data["quality"])
     columns = st.columns(3)
     for column, severity in zip(columns, ["PASS", "WARN", "FAIL"]):

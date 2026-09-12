@@ -1,0 +1,156 @@
+{
+  "status": "COMPLETE",
+  "start": "2023-09-01",
+  "end": "2026-08-31",
+  "retrieved_at": "2026-09-12T17:16:45.652815+00:00",
+  "sources": [
+    {
+      "name": "XIU.TO",
+      "url": "https://finance.yahoo.com/quote/XIU.TO/history/",
+      "series_id": "XIU.TO",
+      "units": "CAD per share",
+      "transformation": "Close for valuation; log adjusted-close ratios for shocks",
+      "retrieved_at": "2026-09-12T17:16:45.652815+00:00",
+      "first_date": "2023-09-01",
+      "last_date": "2026-08-31",
+      "rows": 752,
+      "status": "OK",
+      "security_metadata": {
+        "symbol": "XIU.TO",
+        "longName": "iShares S&P/TSX 60 Index ETF",
+        "shortName": "iSHARES SP TSX 60 INDEX ETF",
+        "currency": "CAD",
+        "instrumentType": "ETF",
+        "exchangeName": "TOR"
+      }
+    },
+    {
+      "name": "SPY",
+      "url": "https://finance.yahoo.com/quote/SPY/history/",
+      "series_id": "SPY",
+      "units": "USD per share",
+      "transformation": "Close for valuation; log adjusted-close ratios for shocks",
+      "retrieved_at": "2026-09-12T17:16:45.652815+00:00",
+      "first_date": "2023-09-01",
+      "last_date": "2026-08-31",
+      "rows": 751,
+      "status": "OK",
+      "security_metadata": {
+        "symbol": "SPY",
+        "longName": "State Street SPDR S&P 500 ETF Trust",
+        "shortName": "State Street SPDR S&P 500 ETF T",
+        "currency": "USD",
+        "instrumentType": "ETF",
+        "exchangeName": "PCX"
+      }
+    },
+    {
+      "name": "TLT",
+      "url": "https://finance.yahoo.com/quote/TLT/history/",
+      "series_id": "TLT",
+      "units": "USD per share",
+      "transformation": "Close for valuation; log adjusted-close ratios for shocks",
+      "retrieved_at": "2026-09-12T17:16:45.652815+00:00",
+      "first_date": "2023-09-01",
+      "last_date": "2026-08-31",
+      "rows": 751,
+      "status": "OK",
+      "security_metadata": {
+        "symbol": "TLT",
+        "longName": "iShares 20+ Year Treasury Bond ETF",
+        "shortName": "iShares 20+ Year Treasury Bond ",
+        "currency": "USD",
+        "instrumentType": "ETF",
+        "exchangeName": "NGM"
+      }
+    },
+    {
+      "name": "VIX",
+      "url": "https://finance.yahoo.com/quote/^VIX/history/",
+      "series_id": "^VIX",
+      "units": "index points",
+      "transformation": "VIX / 100: annual volatility proxy",
+      "retrieved_at": "2026-09-12T17:16:45.652815+00:00",
+      "first_date": "2023-09-01",
+      "last_date": "2026-08-31",
+      "rows": 752,
+      "status": "OK",
+      "security_metadata": {
+        "symbol": "^VIX",
+        "longName": "CBOE Volatility Index",
+        "shortName": "CBOE Volatility Index",
+        "currency": "USD",
+        "instrumentType": "INDEX",
+        "exchangeName": "CXI"
+      }
+    },
+    {
+      "name": "fx",
+      "url": "https://www.bankofcanada.ca/valet/observations/FXUSDCAD/json?start_date=2023-09-01&end_date=2026-08-31",
+      "series_id": "FXUSDCAD",
+      "units": "CAD per USD",
+      "transformation": "Identity; log changes",
+      "retrieved_at": "2026-09-12T17:16:45.652815+00:00",
+      "first_date": "2023-09-01",
+      "last_date": "2026-08-31",
+      "rows": 746,
+      "status": "OK"
+    },
+    {
+      "name": "CAD",
+      "url": "https://www.bankofcanada.ca/stats/results/csv?lookupPage=lookup_yield_curve.php&startRange=1986-01-01&searchRange=&dFrom=2023-09-01&dTo=2026-08-31",
+      "series_id": "ZC100YR,ZC200YR,ZC500YR,ZC1000YR,ZC3000YR",
+      "units": "continuous annual decimal",
+      "transformation": "Published fitted zero yields; selected observed nodes, no scaling",
+      "retrieved_at": "2026-09-12T17:16:45.652815+00:00",
+      "first_date": "2023-09-01",
+      "last_date": "2026-08-26",
+      "rows": 779,
+      "status": "OK"
+    },
+    {
+      "name": "USD",
+      "url": "https://www.federalreserve.gov/data/yield-curve-tables/feds200628.csv",
+      "series_id": "SVENY01,SVENY02,SVENY05,SVENY10,SVENY30",
+      "units": "continuous annual decimal",
+      "transformation": "Published fitted zero yields in percent / 100",
+      "retrieved_at": "2026-09-12T17:16:45.652815+00:00",
+      "first_date": "2023-09-01",
+      "last_date": "2026-08-31",
+      "rows": 782,
+      "status": "OK"
+    },
+    {
+      "name": "spread",
+      "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=BAMLC0A0CM&cosd=2023-09-01&coed=2026-08-31",
+      "series_id": "BAMLC0A0CM",
+      "units": "annual spread decimal",
+      "transformation": "Percent / 100; index OAS used as a flat continuous spread proxy",
+      "retrieved_at": "2026-09-12T17:16:45.652815+00:00",
+      "first_date": "2023-09-12",
+      "last_date": "2026-08-31",
+      "rows": 787,
+      "status": "OK"
+    }
+  ],
+  "checksums": {
+    "factor_levels.csv": "670c57c027bd8f8d8bd3379cf1f28365190af50196510fbdf90a593556887102",
+    "fx_rates.csv": "3dc3397497a2de09dcb748fc30fffcd6bb3b64c83971a07efb66e2dda3e5a9df",
+    "market_prices.csv": "4f203b1f4691ce291175652c5dcb9fa3906a464fd96c01964c76502bb9e8e0b1",
+    "portfolios.csv": "aa708fb7580456155222656d3e0daad1f7ba0e480fa9462208f344365d8589ea",
+    "security_master.csv": "436d402930ae1d422a531b5b77c2a00ef74eeeb1aa7fb00d1ebc43636b1a851c",
+    "trades.csv": "3d7f1b2efa7558ac43475e772f756fe2ca0ab15484765e879549549664db76e1",
+    "yield_curve.csv": "52eb28a6ebfac187d43f91fa44d92d8606318364b9951e0334c06a80dbea82be"
+  },
+  "warnings": [
+    "BoC curves have a publication lag; valuation is retrospective, not an as-published trading backtest.",
+    "FRED ICE data may supply only three years and has redistribution restrictions.",
+    "VIX is a 30-day S&P 500 volatility proxy, not the SPY contract's implied volatility.",
+    "Current option-chain IV is deliberately excluded from historical valuation to avoid look-ahead."
+  ],
+  "raw_directory": "data\\raw\\public\\20260912T171645652834Z",
+  "as_of_date": "2026-08-26",
+  "prior_date": "2026-08-25",
+  "portfolio_label": "Hypothetical portfolio using public historical market data",
+  "contract_assumptions": "Hypothetical bond terms; European SPY call, strike 800, expiry 2027-08-31, assumed dividend yield 1.2%; VIX proxy"
+}

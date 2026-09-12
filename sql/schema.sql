@@ -1,4 +1,7 @@
 PRAGMA foreign_keys = ON;
+CREATE TABLE IF NOT EXISTS data_snapshot (
+    id INTEGER PRIMARY KEY CHECK(id=1), manifest TEXT NOT NULL
+);
 CREATE TABLE IF NOT EXISTS portfolios (
     portfolio_id TEXT PRIMARY KEY, base_currency TEXT NOT NULL CHECK(length(base_currency)=3)
 );

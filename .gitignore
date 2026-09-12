@@ -8,5 +8,7 @@ data/*.db-*
 outputs/
 node_modules/
 .env
-data/mixed_sample/
+# Download locally: public feed licensing does not automatically permit redistribution.
+data/raw/public/
+data/processed/*/*.csv
 *.xlsx.inspect.ndjson

@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from src.data.sample import sample_tables
+from tests.fixtures.synthetic import sample_tables
 from src.stress.scenarios import stress_results, curve_scenarios
 from src.attribution.risk_change import attribute_change
 from src.controls.data_quality import quality_checks

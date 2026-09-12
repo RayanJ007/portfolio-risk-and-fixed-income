@@ -1,1 +1,2 @@
+# Includes yfinance for explicit public-data refreshes; cached risk runs stay offline.
 -e .[dev]

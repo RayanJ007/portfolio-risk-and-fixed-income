@@ -2,7 +2,7 @@ import sqlite3
 
 import pytest
 
-from src.data.sample import write_sample
+from tests.fixtures.synthetic import write_sample
 from src.data.imports import import_directory
 from src.database.connection import connect
 from src.database.repository import settled_positions

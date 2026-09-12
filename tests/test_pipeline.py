@@ -6,7 +6,7 @@ import pandas as pd
 import pytest
 
 from src.data.imports import import_directory
-from src.data.sample import write_sample
+from tests.fixtures.synthetic import write_sample
 from src.database.connection import connect, ROOT
 from src.pipeline import load_config, run_portfolio
 from src.reporting.daily_report import export_reports
@@ -19,7 +19,7 @@ def daily_result(tmp_path_factory):
     write_sample(folder / "input")
     connection = connect(folder / "test.db")
     import_directory(connection, folder / "input")
-    config = load_config()
+    config = load_config("tests/fixtures/portfolio.yaml")
     config["database"] = str(folder / "test.db")
     result = run_portfolio(connection, config)
     export_reports(result, folder / "reports")
@@ -71,7 +71,7 @@ def test_failures_persist_and_block_risk(tmp_path):
     connection.execute("DELETE FROM market_prices WHERE security_id='CA_EQ'")
     connection.commit()
     with pytest.raises(ValueError, match="Data quality FAIL"):
-        run_portfolio(connection, load_config())
+        run_portfolio(connection, load_config("tests/fixtures/portfolio.yaml"))
     assert connection.execute("SELECT COUNT(*) FROM risk_results").fetchone()[0] == 0
     assert (
         connection.execute(

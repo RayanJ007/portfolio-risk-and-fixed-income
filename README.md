@@ -4,7 +4,7 @@ A student finance/data project using Python and SQL to value a multi-asset portf
 
 **What risks does the portfolio hold, how could it lose money, and why did its risk change since the previous valuation date?**
 
-**Data note:** Holdings and most market histories are synthetic and reproducible. A separate mixed-data run uses archived real Bank of Canada USD/CAD observations while other markets remain synthetic. Generated VaR, P&L, stress losses and performance metrics are not realized portfolio results.
+**Data note:** This project evaluates a hypothetical multi-asset portfolio using public historical market data. XIU.TO, SPY and TLT prices come from Yahoo Finance; USD/CAD and Canadian zero curves from the Bank of Canada; US zero curves from the Federal Reserve; investment-grade spreads from FRED; and VIX from Yahoo. Holdings, trades, bond terms and the European SPY call contract are hypothetical. These are cached historical valuations, not live quotes or actual investment performance.
 
 ![Portfolio overview](docs/images/portfolio_overview.png)
 ![Risk change attribution](docs/images/risk_attribution.png)
@@ -20,17 +20,29 @@ A student finance/data project using Python and SQL to value a multi-asset portf
 
 ## Key sample results
 
-Generated synthetic demonstration as of August 31, 2026, using 252 synchronized daily observations and 10,000 Monte Carlo simulations with seed 42:
+Public-data hypothetical portfolio as of August 26, 2026 (prior August 25), using 252 synchronized daily observations and 10,000 Monte Carlo simulations with seed 42. The Canadian zero-curve publication lag determines the valuation cutoff:
 
 | Measure | Result |
 |---|---:|
-| Portfolio NAV | CAD 101.39 million |
-| 99% one-day parametric VaR | CAD 1.355 million |
-| 99% one-day Monte Carlo VaR | CAD 1.340 million |
+| Portfolio NAV | CAD 110.46 million |
+| 99% one-day parametric VaR | CAD 1.029 million |
+| 99% one-day Monte Carlo VaR | CAD 1.000 million |
 | Largest component-risk group | Equity |
-| Equity-crash scenario P&L | CAD −13.87 million |
+| Equity-crash scenario P&L | CAD −15.50 million |
 
 See the [sample daily report](reports/sample_daily_risk_report.md) for detailed results and assumptions.
+
+## Data sources
+
+| Input | Public source / convention |
+|---|---|
+| XIU.TO, SPY, TLT | Yahoo Finance via yfinance; close for marks, adjusted close for return shocks |
+| USD/CAD | [Bank of Canada Valet](https://www.bankofcanada.ca/valet/docs/), FXUSDCAD; CAD per USD |
+| CAD zero curve | [Bank of Canada](https://www.bankofcanada.ca/rates/interest-rates/bond-yield-curves/), 1/2/5/10/30 years |
+| USD zero curve | [Federal Reserve GSW](https://www.federalreserve.gov/data/nominal-yield-curve.htm), SVENY01/02/05/10/30 |
+| USD investment-grade spread | [FRED BAMLC0A0CM](https://fred.stlouisfed.org/series/BAMLC0A0CM), index OAS proxy |
+| Option volatility | Yahoo ^VIX; 30-day S&P 500 proxy, divided by 100 |
+| Ownership and instrument terms | Hypothetical holdings/trades; hypothetical bonds and European SPY call |
 
 ## How it works
 
@@ -47,7 +59,7 @@ The two-date bridge separates position, price, FX, rate, volatility and correlat
 
 ## Tech stack
 
-Python, pandas, NumPy, SciPy, SQLite, Streamlit, Plotly, Matplotlib, Requests, PyYAML, XlsxWriter, openpyxl and pytest. Notebooks use Jupyter. Core pricing is implemented directly without a financial pricing library.
+Python, pandas, NumPy, SciPy, SQLite, Streamlit, Plotly, Matplotlib, Requests, yfinance, PyYAML, XlsxWriter, openpyxl and pytest. Notebooks use Jupyter. Core pricing is implemented directly without a financial pricing library.
 
 ## Methodology summary
 
@@ -62,7 +74,7 @@ Formulas, conventions and model limits are in the [methodology guide](reports/ri
 ## Repository structure
 
 ```text
-src/data/         CSV imports, public FX adapter and labelled sample generator
+src/data/         Public downloads, verified snapshots and hypothetical holdings
 src/database/     SQLite access and settled positions
 src/pricing/      Bond and European option mathematics
 src/portfolio/    Shared valuation, returns and performance diagnostics
@@ -77,6 +89,7 @@ dashboard/        Streamlit application
 models/           Included Excel workbook
 notebooks/        Four finance explorations
 reports/          Methodology, validation and sample report
+tests/fixtures/   Deterministic synthetic tests, separate from portfolio inputs
 ```
 
 ## Run locally
@@ -87,20 +100,21 @@ Python 3.11+ is required. From the repository root on Windows PowerShell:
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install -r requirements.txt
+python main.py refresh --start 2023-09-01 --end 2026-08-31
 python main.py demo --excel
 streamlit run dashboard/app.py
 ```
 
-On macOS/Linux, activate with `source .venv/bin/activate`. Open the local URL printed by Streamlit. The sample runs offline after installation and writes reports to `outputs/`.
+On macOS/Linux, activate with `source .venv/bin/activate`. Open the local URL printed by Streamlit. The first refresh requires internet access. Subsequent `demo` runs reuse the verified local snapshot without network access and write reports to `outputs/`. Public-feed CSV caches are excluded from Git; refresh them locally. Refresh failures name the source and preserve the previous working configuration. There is no random-data fallback.
 
 Open [risk_reporting_model.xlsx](models/risk_reporting_model.xlsx), or regenerate it with `python main.py excel --output outputs`. Excel generation uses the standard Python dependencies. NAV, weights, allocations and checks are formulas; VaR/ES and other risk analytics are Python snapshots and require another Python run after inputs change. Cached formula values support previews; a spreadsheet calculation engine recalculates edits.
 
-For the archived real-FX example, run `python main.py mixed-demo` and select `outputs/mixed/` in the dashboard. Existing databases are reused; use a new database path for a changed CSV import. See the [data instructions](data/README.md) for import commands. Install optional notebook tools with `python -m pip install -e ".[notebooks]"`. Exact validated package versions are in `requirements-lock.txt`.
+See the [data instructions](data/README.md) for source identifiers, units, offline rebuilds, cache locations and import commands. Each successful refresh creates a new snapshot and database path. Install optional notebook tools with `python -m pip install -e ".[notebooks]"`. Exact validated package versions are in `requirements-lock.txt`.
 
 ## Validation
 
-Run `python -m pytest -q`. The 38-test suite covers pricing formulas, portfolio valuation, VaR/ES behavior, stress, SQL integration, attribution, data-quality gates, dashboard interactions and workbook consistency. See the [validation record](reports/VALIDATION.md) for test counts and evidence.
+Run `python -m pytest -q`. The automated suite covers pricing formulas, portfolio valuation, VaR/ES behavior, stress, SQL integration, attribution, data-quality gates, dashboard interactions and workbook consistency. See the [validation record](reports/VALIDATION.md) for test counts and evidence.
 
 ## Limitations
 
-Most data is synthetic. The performance series is a frozen-exposure hypothetical replay, not a realized strategy backtest. Risk is one-day instantaneous shock risk with Gaussian Monte Carlo factors and a limited historical tail. Bonds and European options use simplified conventions; there is no default, liquidity, transaction-cost or automatic corporate-action model. Reporting supports CAD base with CAD/USD holdings. The app is local and has no live production deployment.
+Holdings and contract terms are hypothetical. Public feeds are not equivalent to Bloomberg/Refinitiv. The USD corporate bond uses an index OAS proxy; the European call uses VIX rather than contract-specific IV. Published zero curves are fitted estimates and can be revised; this is not a historical as-published trading backtest. The performance series is a frozen-exposure hypothetical replay, not a realized strategy backtest. Risk is one-day instantaneous shock risk with Gaussian Monte Carlo factors and a limited historical tail. Bonds and European options use simplified conventions; there is no default, liquidity, transaction-cost or automatic corporate-action model. Reporting supports CAD base with CAD/USD holdings. The app is local and has no live production deployment.

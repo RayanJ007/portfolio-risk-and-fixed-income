@@ -30,5 +30,4 @@ Equity crash:
 Custom:
   equity_return: -0.10
   rates_bp: 50
-  factor_shocks:
-    SPREAD_CA: 0.005
+  spread_bp: 50

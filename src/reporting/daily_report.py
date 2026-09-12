@@ -130,5 +130,12 @@ Interaction effect relative to standalone changes: {attr['interaction_vs_standal
 
 Volatility-floor activations in Monte Carlo: {meta['volatility_floor_hits']}. No history is forward-filled. Holiday/missing-day gaps exclude both adjacent changes. See `reports/risk_methodology.md` for assumptions and limits.
 """
+    if meta.get("data_sources"):
+        sources = pd.DataFrame(meta["data_sources"])
+        text += "\n## Public source snapshot\n\n"
+        text += f"Retrieved {meta['snapshot_retrieved_at']}. Source status applies to this cached snapshot.\n\n"
+        text += markdown_table(sources[["name", "series_id", "last_date", "units", "status"]])
+        text += "\n\n" + meta["contract_assumptions"] + ".\n\n"
+        text += "\n".join("- " + note for note in meta["source_warnings"]) + "\n"
     (output / "daily_risk_report.md").write_text(text, encoding="utf-8")
     return output / "risk_report.json"

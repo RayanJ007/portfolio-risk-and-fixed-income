@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from src.data.sample import sample_tables, write_sample
+from tests.fixtures.synthetic import sample_tables, write_sample
 from src.data.imports import import_directory
 from src.database.connection import connect
 from src.database.repository import settled_positions, insert_frame
@@ -101,8 +101,8 @@ def test_curve_vector_pricer_matches_independent_scalar():
 
 
 def test_real_fx_import_preserves_observations(tmp_path):
-    write_sample(tmp_path, real_fx_path="data/raw/boc_usdcad.csv")
-    actual = pd.read_csv("data/raw/boc_usdcad.csv")
+    write_sample(tmp_path, real_fx_path="tests/fixtures/boc_usdcad.csv")
+    actual = pd.read_csv("tests/fixtures/boc_usdcad.csv")
     imported = pd.read_csv(tmp_path / "fx_rates.csv")
     pd.testing.assert_frame_equal(actual, imported)
     factors = pd.read_csv(tmp_path / "factor_levels.csv").query("factor=='FX_USD'")

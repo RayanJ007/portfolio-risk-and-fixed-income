@@ -1,9 +1,0 @@
-security_id,ticker,name,security_type,asset_class,currency,sector,country,price_factor,maturity_date,coupon_rate,coupon_frequency,face_value,curve_name,credit_rating,spread_factor,strike,option_type,underlying_factor,volatility_factor,dividend_yield,multiplier,allow_short,benchmark
-CA_EQ,DEMO-CA,Canadian equity basket,equity,Equity,CAD,Broad market,CA,EQ_CA,,,,,,,,,,,,0.0,1.0,0,EQ_CA
-US_EQ,DEMO-US,US equity basket,equity,Equity,USD,Broad market,US,EQ_US,,,,,,,,,,,,0.0,1.0,0,EQ_CA
-US_ETF,DEMO-T,US Treasury ETF proxy,etf,Fixed income ETF,USD,Government,US,ETF_US,,,,,,,,,,,,0.0,1.0,0,EQ_CA
-CA_GOV,DEMO-GOV,Canadian government bond,bond,Government bond,CAD,Government,CA,,2031-08-31,0.035,2.0,100.0,CAD,AAA,,,,,,0.0,1.0,0,EQ_CA
-CA_CORP,DEMO-CORP,Canadian corporate bond,bond,Corporate bond,CAD,Financials,CA,,2033-08-31,0.05,2.0,100.0,CAD,A,SPREAD_CA,,,,,0.0,1.0,0,EQ_CA
-US_CALL,DEMO-CALL,European US basket call,option,Option,USD,Broad market,US,,2027-08-31,,,,USD,,,260.0,call,EQ_US,VOL_US,0.015,100.0,0,EQ_CA
-CAD_CASH,CAD,CAD cash,cash,Cash,CAD,Cash,CA,,,,,,,,,,,,,0.0,1.0,0,EQ_CA
-USD_CASH,USD,USD cash,cash,Cash,USD,Cash,US,,,,,,,,,,,,,0.0,1.0,0,EQ_CA

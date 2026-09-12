@@ -17,16 +17,9 @@ def export_excel(report_path, output_path="models/risk_reporting_model.xlsx"):
     classes = {r["security_id"]: r["asset_class"] for r in master}
     if len(classes) != len(master) or not positions:
         raise ValueError("Duplicate master or empty portfolio")
-    values = [
-        r["quantity"] * r["market_price"] * r["multiplier"] * r["fx_rate"]
-        for r in positions
-    ]
+    values = [r["quantity"] * r["market_price"] * r["multiplier"] * r["fx_rate"] for r in positions]
     nav = sum(values)
-    if (
-        not all(math.isfinite(v) for v in values)
-        or nav <= 0
-        or abs(nav - data["nav"]) > 0.01
-    ):
+    if not all(math.isfinite(v) for v in values) or nav <= 0 or abs(nav - data["nav"]) > 0.01:
         raise ValueError("NAV reconciliation failed")
     meta, attr = data["metadata"], data["attribution_summary"]
     names = [
@@ -52,13 +45,12 @@ def export_excel(report_path, output_path="models/risk_reporting_model.xlsx"):
     with xlsxwriter.Workbook(
         output, {"strings_to_formulas": False, "strings_to_urls": False}
     ) as wb:
-        wb.set_properties(
-            {"title": "Portfolio Risk & Fixed-Income Analytics", "author": ""}
-        )
+        wb.set_properties({"title": "Portfolio Risk & Fixed-Income Analytics", "author": ""})
         wb.set_calc_mode("auto")
         sheets = {n: wb.add_worksheet(n) for n in names}
         base = {"font_name": "Arial", "font_size": 10, "font_color": "#263D5A"}
         normal = wb.add_format(base)
+        wrapped = wb.add_format(dict(base, text_wrap=True, valign="top"))
         number = wb.add_format(dict(base, num_format='#,##0.00;(#,##0.00);"—"'))
         money = wb.add_format(dict(base, num_format='#,##0;(#,##0);"—"'))
         percent = wb.add_format(dict(base, num_format="0.00%"))
@@ -102,9 +94,7 @@ def export_excel(report_path, output_path="models/risk_reporting_model.xlsx"):
                     {
                         "name": name.replace(" ", "") + "Table",
                         "style": "Table Style Light 1",
-                        "columns": [
-                            {"header": c, "header_format": header} for c in columns
-                        ],
+                        "columns": [{"header": c, "header_format": header} for c in columns],
                     },
                 )
             for i, row in enumerate(rows, 5):
@@ -115,6 +105,11 @@ def export_excel(report_path, output_path="models/risk_reporting_model.xlsx"):
                         else number if isinstance(value, (int, float)) else normal
                     )
                     sheet.write(i, j, value, fmt)
+                if name in ("Cover", "Daily Report"):
+                    sheet.set_row(i, max(38, 15 * (1 + max(len(str(v)) // 95 for v in row))))
+                    for j, value in enumerate(row):
+                        if isinstance(value, str):
+                            sheet.write(i, j, value, wrapped)
             if len(rows) > 15:
                 sheet.freeze_panes(5, 0)
             return sheet
@@ -128,12 +123,14 @@ def export_excel(report_path, output_path="models/risk_reporting_model.xlsx"):
                 ["As of", datetime.fromisoformat(meta["as_of_date"])],
                 ["Base currency", meta["base_currency"]],
                 ["Data", meta["source_label"]],
+                ["Snapshot retrieved", meta.get("snapshot_retrieved_at", "Not supplied")],
                 [
                     "One-day confidence levels",
                     ", ".join(f"{c:.0%}" for c in meta["confidence_levels"]),
                 ],
                 ["Calibration observations", meta["observations"]],
-                ["Refresh", "python main.py demo --excel"],
+                ["Recalculate cached data", "python main.py demo --excel"],
+                ["Refresh public sources", "python main.py refresh; then rerun cached calculation"],
                 [
                     "Risk snapshots",
                     "Re-run Python after changing holdings or market data",
@@ -172,9 +169,7 @@ def export_excel(report_path, output_path="models/risk_reporting_model.xlsx"):
             [20, 18, 18, 16, 17, 22, 15, 26, 15],
         )
         end = 5 + len(positions)
-        input_format = wb.add_format(
-            dict(base, font_color="#215CC4", num_format="#,##0.00")
-        )
+        input_format = wb.add_format(dict(base, font_color="#215CC4", num_format="#,##0.00"))
         for i, (r, v) in enumerate(zip(positions, values), 6):
             p.write_row(
                 i - 1,
@@ -468,8 +463,7 @@ def export_excel(report_path, output_path="models/risk_reporting_model.xlsx"):
                 [
                     (
                         datetime.fromisoformat(r[f])
-                        if f
-                        in ("date", "trade_date", "settlement_date", "maturity_date")
+                        if f in ("date", "trade_date", "settlement_date", "maturity_date")
                         and r.get(f)
                         else r.get(f)
                     )
@@ -478,6 +472,35 @@ def export_excel(report_path, output_path="models/risk_reporting_model.xlsx"):
                 for r in data["inputs"][key]
             ]
             table(name, heading, columns, rows, widths)
+        if meta.get("data_sources"):
+            source_sheet = sheets["Market Data"]
+            fields = [
+                "name",
+                "series_id",
+                "last_date",
+                "units",
+                "transformation",
+                "url",
+                "retrieved_at",
+            ]
+            source_sheet.write_row(
+                "H5",
+                [
+                    "Source",
+                    "Series",
+                    "Last observation",
+                    "Units",
+                    "Transformation",
+                    "URL",
+                    "Retrieved at",
+                ],
+                header,
+            )
+            for j, width in enumerate([18, 40, 18, 27, 65, 85, 32], 7):
+                source_sheet.set_column(j, j, width, wrapped)
+            for i, source in enumerate(meta["data_sources"], 5):
+                source_sheet.set_row(i, 64)
+                source_sheet.write_row(i, 7, [source[field] for field in fields], wrapped)
         for i, r in enumerate(master, 5):
             if r.get("coupon_rate") is not None:
                 sheets["Security Master"].write_number(i, 6, r["coupon_rate"], percent)
@@ -504,6 +527,8 @@ def export_excel(report_path, output_path="models/risk_reporting_model.xlsx"):
                 ["Performance", meta["performance_basis"]],
                 ["Attribution", attr["methodology"]],
                 ["Volatility floor hits", meta["volatility_floor_hits"]],
+                ["Instrument terms", meta.get("contract_assumptions", "See security master")],
+                ["Snapshot limitations", " ".join(meta.get("source_warnings", []))],
                 [
                     "Workbook refresh",
                     "Risk analytics are Python snapshots; rerun the CLI to refresh.",
