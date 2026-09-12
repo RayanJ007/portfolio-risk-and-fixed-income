@@ -1,7 +1,5 @@
 # Portfolio Risk & Fixed-Income Analytics
 
-A student finance/data project using Python and SQL to value a multi-asset portfolio, measure potential market losses, and explain changes in risk.
-
 **What risks does the portfolio hold, how could it lose money, and why did its risk change since the previous valuation date?**
 
 **Data note:** This project evaluates a hypothetical multi-asset portfolio using public historical market data. XIU.TO, SPY and TLT prices come from Yahoo Finance; USD/CAD and Canadian zero curves from the Bank of Canada; US zero curves from the Federal Reserve; investment-grade spreads from FRED; and VIX from Yahoo. Holdings, trades, bond terms and the European SPY call contract are hypothetical. These are cached historical valuations, not live quotes or actual investment performance.
