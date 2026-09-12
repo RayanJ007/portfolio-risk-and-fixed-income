@@ -1,0 +1,41 @@
+scenario,security_id,pnl,asset_class,currency
+Recession,CA_EQ,-6275000.0,Equity,CAD
+Recession,US_EQ,-4521999.999999997,Equity,USD
+Recession,US_ETF,1125331.9999999988,Fixed income ETF,USD
+Recession,CA_GOV,790679.6998636895,Government bond,CAD
+Recession,CA_CORP,-876520.3714867261,Corporate bond,CAD
+Recession,US_CALL,-142013.06617554714,Option,USD
+Recession,CAD_CASH,0.0,Cash,CAD
+Recession,USD_CASH,217600.00000000003,Cash,USD
+Inflation,CA_EQ,-4518000.0,Equity,CAD
+Inflation,US_EQ,-5064639.999999994,Equity,USD
+Inflation,US_ETF,-1061507.2000000004,Fixed income ETF,USD
+Inflation,CA_GOV,-1497474.1623540793,Government bond,CAD
+Inflation,CA_CORP,-1683729.2270151726,Corporate bond,CAD
+Inflation,US_CALL,-139989.20790369448,Option,USD
+Inflation,CAD_CASH,0.0,Cash,CAD
+Inflation,USD_CASH,-108800.00000000001,Cash,USD
+Credit crisis,CA_EQ,-8785000.0,Equity,CAD
+Credit crisis,US_EQ,-6473599.999999995,Equity,USD
+Credit crisis,US_ETF,1666163.200000001,Fixed income ETF,USD
+Credit crisis,CA_GOV,1060712.5941559572,Government bond,CAD
+Credit crisis,CA_CORP,-1988484.9863497482,Corporate bond,CAD
+Credit crisis,US_CALL,-148993.37952019117,Option,USD
+Credit crisis,CAD_CASH,0.0,Cash,CAD
+Credit crisis,USD_CASH,326400.00000000047,Cash,USD
+Equity crash,CA_EQ,-7530000.0,Equity,CAD
+Equity crash,US_EQ,-6306999.999999997,Equity,USD
+Equity crash,US_ETF,596258.0000000006,Fixed income ETF,USD
+Equity crash,CA_GOV,260363.13912406826,Government bond,CAD
+Equity crash,CA_CORP,-876520.3714867261,Corporate bond,CAD
+Equity crash,US_CALL,-147887.80320586116,Option,USD
+Equity crash,CAD_CASH,0.0,Cash,CAD
+Equity crash,USD_CASH,136000.00000000012,Cash,USD
+Custom,CA_EQ,-2510000.0,Equity,CAD
+Custom,US_EQ,-2380000.0,Equity,USD
+Custom,US_ETF,0.0,Fixed income ETF,USD
+Custom,CA_GOV,-511331.0185248176,Government bond,CAD
+Custom,CA_CORP,-706950.3398291976,Corporate bond,CAD
+Custom,US_CALL,-137319.87992066826,Option,USD
+Custom,CAD_CASH,0.0,Cash,CAD
+Custom,USD_CASH,0.0,Cash,USD

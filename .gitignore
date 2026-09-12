@@ -5,7 +5,6 @@ __pycache__/
 *.egg-info/
 data/*.db
 data/*.db-*
-outputs/
 node_modules/
 .env
 # Download locally: public feed licensing does not automatically permit redistribution.

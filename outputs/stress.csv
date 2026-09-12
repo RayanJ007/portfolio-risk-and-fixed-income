@@ -1,0 +1,41 @@
+scenario,security_id,pnl,asset_class,currency
+Recession,XIU.TO,-6134727.482795715,Equity,CAD
+Recession,SPY,-6059172.000769043,Equity,USD
+Recession,TLT,1084206.8501207277,Fixed income ETF,USD
+Recession,HYP_CAD_GOV,788214.1465605116,Government bond,CAD
+Recession,HYP_US_IG,59902.60746421825,Corporate bond,USD
+Recession,HYP_SPY_CALL,-331791.0335133785,Option,USD
+Recession,CAD_CASH,0.0,Cash,CAD
+Recession,USD_CASH,222016.0,Cash,USD
+Inflation,XIU.TO,-4417003.787612912,Equity,CAD
+Inflation,SPY,-6786272.640861327,Equity,USD
+Inflation,TLT,-1022714.5213079102,Fixed income ETF,USD
+Inflation,HYP_CAD_GOV,-1492609.6809456353,Government bond,CAD
+Inflation,HYP_US_IG,-2356630.2321455753,Corporate bond,USD
+Inflation,HYP_SPY_CALL,-337680.7288342453,Option,USD
+Inflation,CAD_CASH,0.0,Cash,CAD
+Inflation,USD_CASH,-111008.0,Cash,USD
+Credit crisis,XIU.TO,-8588618.475914001,Equity,CAD
+Credit crisis,SPY,-8674183.074785156,Equity,USD
+Credit crisis,TLT,1605273.4258503926,Fixed income ETF,USD
+Credit crisis,HYP_CAD_GOV,1057420.7310089583,Government bond,CAD
+Credit crisis,HYP_US_IG,-808786.7282689615,Corporate bond,USD
+Credit crisis,HYP_SPY_CALL,-322636.52165978245,Option,USD
+Credit crisis,CAD_CASH,0.0,Cash,CAD
+Credit crisis,USD_CASH,333024.0000000004,Cash,USD
+Equity crash,XIU.TO,-7361672.979354858,Equity,CAD
+Equity crash,SPY,-8450950.422125248,Equity,USD
+Equity crash,TLT,574467.8086460572,Fixed income ETF,USD
+Equity crash,HYP_CAD_GOV,259543.59267050592,Government bond,CAD
+Equity crash,HYP_US_IG,-328534.3281613223,Corporate bond,USD
+Equity crash,HYP_SPY_CALL,-327891.92035215354,Option,USD
+Equity crash,CAD_CASH,0.0,Cash,CAD
+Equity crash,USD_CASH,138760.0,Cash,USD
+Custom,XIU.TO,-2453890.993118286,Equity,CAD
+Custom,SPY,-3189037.8951416053,Equity,USD
+Custom,TLT,0.0,Fixed income ETF,USD
+Custom,HYP_CAD_GOV,-509699.19936484675,Government bond,CAD
+Custom,HYP_US_IG,-787129.8505894572,Corporate bond,USD
+Custom,HYP_SPY_CALL,-371814.07476550684,Option,USD
+Custom,CAD_CASH,0.0,Cash,CAD
+Custom,USD_CASH,0.0,Cash,USD

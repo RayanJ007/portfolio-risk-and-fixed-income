@@ -1,0 +1,9 @@
+security_id,quantity,book_cost,ticker,name,security_type,asset_class,currency,sector,country,benchmark,credit_rating,maturity_date,coupon_rate,coupon_frequency,face_value,price_factor,curve_name,spread_factor,underlying_factor,strike,option_type,volatility_factor,dividend_yield,multiplier,allow_short,market_price,fx_rate,market_value,weight,as_of_date,portfolio_id
+CAD_CASH,6585000.0,6585000.0,CAD,CAD cash,cash,Cash,CAD,Cash,CA,EQ_CA,,,,,,,,,,,,,0.0,1.0,0,1.0,1.0,6585000.0,0.0649469030093423,2026-08-31,DEMO
+CA_CORP,120000.0,12000000.0,DEMO-CORP,Canadian corporate bond,bond,Corporate bond,CAD,Financials,CA,EQ_CA,A,2033-08-31,0.05,2.0,100.0,,CAD,SPREAD_CA,,,,,0.0,1.0,0,101.43134704101848,1.0,12171761.644922217,0.12004832543744814,2026-08-31,DEMO
+CA_EQ,251000.0,24564350.63344711,DEMO-CA,Canadian equity basket,equity,Equity,CAD,Broad market,CA,EQ_CA,,,,,,EQ_CA,,,,,,,0.0,1.0,0,100.0,1.0,25100000.0,0.24755767130364342,2026-08-31,DEMO
+CA_GOV,220000.0,22000000.0,DEMO-GOV,Canadian government bond,bond,Government bond,CAD,Government,CA,EQ_CA,AAA,2031-08-31,0.035,2.0,100.0,,CAD,,,,,,0.0,1.0,0,101.50410455262364,1.0,22330903.001577202,0.22024646793537822,2026-08-31,DEMO
+USD_CASH,2000000.0,2000000.0,USD,USD cash,cash,Cash,USD,Cash,US,EQ_CA,,,,,,,,,,,,,0.0,1.0,0,1.0,1.36,2720000.0,0.02682696677075339,2026-08-31,DEMO
+US_CALL,100.0,10000.0,DEMO-CALL,European US basket call,option,Option,USD,Broad market,US,EQ_CA,,2027-08-31,,,,,USD,,EQ_US,260.0,call,VOL_US,0.015,100.0,0,20.94494259190091,1.36,284851.2192498524,0.002809446394641316,2026-08-31,DEMO
+US_EQ,70000.0,18626621.536369853,DEMO-US,US equity basket,equity,Equity,USD,Broad market,US,EQ_CA,,,,,,EQ_US,,,,,,,0.0,1.0,0,250.0,1.36,23800000.0,0.23473595924409216,2026-08-31,DEMO
+US_ETF,65000.0,6422479.745804576,DEMO-T,US Treasury ETF proxy,etf,Fixed income ETF,USD,Government,US,EQ_CA,,,,,,ETF_US,,,,,,,0.0,1.0,0,95.0,1.36,8398000.000000002,0.08282825990470111,2026-08-31,DEMO
