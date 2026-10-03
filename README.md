@@ -7,7 +7,7 @@
 ![Portfolio overview](docs/images/portfolio_overview.png)
 ![Risk change attribution](docs/images/risk_attribution.png)
 
-**Live dashboard:** Not deployed. Run the Streamlit app locally using the instructions below.
+**Live dashboard:** Now deployed, check the link attatched.
 
 ## What I built
 
